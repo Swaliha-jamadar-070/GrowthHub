@@ -43,11 +43,18 @@
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
         
-        <!-- Database -->
+        <!-- Database: MySql (Local) -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.33</version>
+        </dependency>
+        
+        <!-- Database: PostgreSQL (For Render Cloud) - ADDED THIS LINE -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
         </dependency>
         
         <!-- JWT -->
@@ -95,7 +102,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <!-- ✅ ADD THIS LINE - Fix for main class not found -->
                     <mainClass>com.roadmap.RoadmapApplication</mainClass>
                     <excludes>
                         <exclude>
