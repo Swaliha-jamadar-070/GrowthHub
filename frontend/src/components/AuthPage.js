@@ -48,7 +48,8 @@ const AuthPage = () => {
         }
 
         try {
-            const res = await axios.post(`http://localhost:8081${endpoint}`, payload, config);
+            // 🟢 FIX: .env file se URL lo
+            const res = await axios.post(`${process.env.REACT_APP_API_URL}${endpoint}`, payload, config);
             
             if (isLogin) {
                 login(res.data.user, res.data.token);
