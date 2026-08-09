@@ -48,8 +48,8 @@ const AuthPage = () => {
         }
 
         try {
-            // 🟢 FIX: .env file se URL lo
-            const res = await axios.post(`${process.env.REACT_APP_API_URL}${endpoint}`, payload, config);
+            // 🚀 FINAL FIX: Hardcoded Backend URL (No .env dependency)
+            const res = await axios.post(`https://growthhub-10.onrender.com${endpoint}`, payload, config);
             
             if (isLogin) {
                 login(res.data.user, res.data.token);
