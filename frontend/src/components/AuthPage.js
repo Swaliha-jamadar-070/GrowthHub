@@ -48,7 +48,7 @@ const AuthPage = () => {
         }
 
         try {
-            // 🚀 FINAL FIX: Hardcoded Backend URL (No .env dependency)
+            // ✅ Backend URL - Correct
             const res = await axios.post(`https://growthhub-10.onrender.com${endpoint}`, payload, config);
             
             if (isLogin) {
@@ -71,7 +71,8 @@ const AuthPage = () => {
                     errorMessage = error.response.data.error;
                 }
             } else if (error.request) {
-                errorMessage = "Cannot connect to backend on port 8081";
+                // ✅ FIXED: Updated error message
+                errorMessage = "Cannot connect to backend. Please check your internet connection.";
             }
             toast.error(`❌ ${errorMessage}`);
         } finally {
@@ -88,14 +89,12 @@ const AuthPage = () => {
         <div 
             className="min-vh-100 d-flex align-items-center justify-content-center p-4 position-relative" 
             style={{ 
-                /* Clean Technology/Abstract Background Image */
                 backgroundImage: 'url("https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop")',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 backgroundAttachment: 'fixed'
             }}
         >
-            {/* Soft White Overlay so the card stands out beautifully */}
             <div style={{ 
                 position: 'absolute', 
                 top: 0, left: 0, right: 0, bottom: 0, 
@@ -119,7 +118,6 @@ const AuthPage = () => {
                              background: 'linear-gradient(135deg, #6366F1 0%, #8B5CF6 50%, #EC4899 100%)'
                          }}
                     >
-                        {/* FIXED ICON: Purple Rocket inside White Circle */}
                         <div className="mb-4 p-4 bg-white rounded-circle shadow-lg d-flex align-items-center justify-content-center">
                             <FaRocket size={44} className="text-primary" />
                         </div>
