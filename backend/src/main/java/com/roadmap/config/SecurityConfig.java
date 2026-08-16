@@ -57,6 +57,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/weekly/**").permitAll()
+                        .requestMatchers("/", "/error").permitAll()
                         .anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
@@ -67,10 +68,17 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3001"));
+        // 🚀 FIXED: Allow Vercel frontend and all other necessary origins
+        configuration.setAllowedOrigins(Arrays.asList(
+                "https://growth-hub-3ioh-p7g18vht5-swaliha-jamadar-070s-projects.vercel.app",
+                "https://growthhub-10.onrender.com",
+                "http://localhost:3000",
+                "http://localhost:3001",
+                "http://localhost:5173"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
