@@ -3,9 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Layout from './components/layout/Layout';
-// --- REMOVED OLD IMPORTS: import Login from './components/Login'; ---
-// --- REMOVED OLD IMPORTS: import Register from './components/Register'; ---
-import AuthPage from './components/AuthPage'; // <--- Added the new combined Auth Page
+import AuthPage from './components/AuthPage'; 
 import Dashboard from './components/Dashboard';
 import DailyTracker from './components/DailyTracker';
 import WeeklyFocus from './components/WeeklyFocus';
@@ -47,14 +45,15 @@ function AppContent() {
 
 function App() {
     return (
-        <AuthProvider>
-            <BrowserRouter>
+        // 🚨 FIX IS HERE: Router MUST be outside of AuthProvider so navigate works!
+        <BrowserRouter>
+            <AuthProvider>
                 <div className="min-h-screen">
                     <AppContent />
                     <Toaster position="top-right" />
                 </div>
-            </BrowserRouter>
-        </AuthProvider>
+            </AuthProvider>
+        </BrowserRouter>
     );
 }
 
