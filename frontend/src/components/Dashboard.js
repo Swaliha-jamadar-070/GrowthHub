@@ -20,7 +20,6 @@ const Dashboard = () => {
     useEffect(() => {
         console.log("🟡 Dashboard Mounted. User object:", user);
         
-        // Safety timeout: If user hasn't loaded in 3 seconds, stop the spinner anyway
         const timeout = setTimeout(() => {
             if (loading) {
                 console.warn("⚠️ Timeout reached! Stopping loading spinner.");
@@ -40,9 +39,10 @@ const Dashboard = () => {
 
     const fetchData = async () => {
         try {
-            console.log(`🔗 Connecting to: http://localhost:8081/api/tasks/user/${user.id}`);
+            // ✅ FIXED: Using Render backend URL
+            console.log(`🔗 Connecting to: https://growthhub-10.onrender.com/api/tasks/user/${user.id}`);
             
-            const res = await axios.get(`http://localhost:8081/api/tasks/user/${user.id}`, {
+            const res = await axios.get(`https://growthhub-10.onrender.com/api/tasks/user/${user.id}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             
@@ -52,16 +52,15 @@ const Dashboard = () => {
         } catch (error) {
             console.error('❌ Failed to fetch data:', error);
             
-            // Detailed error logging
             if (error.response) {
                 console.log("Status Code:", error.response.status);
                 console.log("Error Message:", error.response.data);
                 
                 if (error.response.status === 403) {
-                    console.error("🔴 403 Forbidden Error! Did you restart Spring Boot after adding @CrossOrigin?");
+                    console.error("🔴 403 Forbidden Error!");
                 }
             } else if (error.request) {
-                console.error("🔴 Network Error: Backend is unreachable. Is localhost:8081 running?");
+                console.error("🔴 Network Error: Backend is unreachable.");
             }
             
             setLoading(false);
@@ -78,7 +77,6 @@ const Dashboard = () => {
         );
     }
 
-    // --- REST OF YOUR CODE BELOW ---
     const totalTasks = tasks.length;
     const completedTasks = tasks.filter(t => t.overallCompleted === true).length;
     const completionRate = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
