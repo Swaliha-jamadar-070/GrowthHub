@@ -1,24 +1,20 @@
-// Add these imports at the top of DailyTracker.js
-import TaskItem from './TaskItem';
-import DailySummaryModal from './DailySummaryModal';
-import QuickRevision from './QuickRevision';
-import ProgressStats from './ProgressStats'; // optional
+// src/components/DailyTracker.js
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { 
     FaCalendarAlt, FaCheck, FaPlus, FaSync, 
     FaSave, FaEdit, FaBullseye, FaTasks, 
-    FaTrophy, FaTimesCircle, FaBook, FaHistory,
-    FaClipboardList, FaStar, FaLightbulb
+    FaTrophy, FaTimesCircle, FaBook, 
+    FaClipboardList, FaStar
 } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-// NEW: Import custom components
+// Import custom components
+import TaskItem from './TaskItem';
 import DailySummaryModal from './DailySummaryModal';
 import QuickRevision from './QuickRevision';
-import TaskItem from './TaskItem';
 
 const DailyTracker = () => {
     const { user, token } = useAuth();
@@ -27,7 +23,7 @@ const DailyTracker = () => {
     const [loading, setLoading] = useState(true);
     const [creating, setCreating] = useState(false);
     
-    // NEW: Modal states
+    // Modal states
     const [isNoteModalOpen, setIsNoteModalOpen] = useState(false);
     const [isSummaryModalOpen, setIsSummaryModalOpen] = useState(false);
     const [isRevisionModalOpen, setIsRevisionModalOpen] = useState(false);
@@ -62,7 +58,7 @@ const DailyTracker = () => {
         }
     };
 
-    // ✅ NEW: Create tasks for a specific day
+    // Create tasks for a specific day
     const createTaskForDay = async (day) => {
         setCreating(true);
         try {
@@ -80,7 +76,7 @@ const DailyTracker = () => {
         }
     };
 
-    // ✅ IMPROVED: Toggle task with better feedback
+    // Toggle task with better feedback
     const toggleTask = async (taskId, field) => {
         const task = tasks.find(t => t.id === taskId);
         if (!task) return;
@@ -106,24 +102,22 @@ const DailyTracker = () => {
         }
     };
 
-    // ✅ NEW: Handle day click with summary view
+    // Handle day click with summary view
     const handleDayClick = async (day) => {
         setSelectedDay(day);
         const dayTasks = tasks.filter(task => task.day === day);
         
-        // If no tasks exist, create them
         if (dayTasks.length === 0 && !creating) {
             await createTaskForDay(day);
         }
         
-        // ✅ NEW: Auto-show summary for past dates (not today)
         if (day !== currentDay) {
             setSelectedDateForSummary(day);
             setIsSummaryModalOpen(true);
         }
     };
 
-    // ✅ NEW: Save note for a task
+    // Save note for a task
     const saveNote = async () => {
         if (!selectedTask) return;
         try {
@@ -141,12 +135,12 @@ const DailyTracker = () => {
         }
     };
 
-    // ✅ NEW: Get tasks for a specific day with notes
+    // Get tasks for a specific day with notes
     const getDayTasksWithNotes = (day) => {
         return tasks.filter(task => task.day === day);
     };
 
-    // ✅ NEW: Get all notes for quick revision
+    // Get all notes for quick revision
     const getAllNotes = () => {
         return tasks
             .filter(task => task.notes && task.notes.trim() !== '')
@@ -159,7 +153,7 @@ const DailyTracker = () => {
             .sort((a, b) => b.date - a.date);
     };
 
-    // ✅ NEW: Helper to get task name
+    // Helper to get task name
     const getTaskName = (task) => {
         const labels = {
             javaCompleted: 'Java',
@@ -175,7 +169,7 @@ const DailyTracker = () => {
         return 'Task';
     };
 
-    // ✅ NEW: Get completion status for a day
+    // Get completion status for a day
     const getDayStatus = (day) => {
         const dayTasks = tasks.filter(task => task.day === day);
         if (dayTasks.length === 0) return 'empty';
@@ -183,7 +177,7 @@ const DailyTracker = () => {
         return completed === dayTasks.length ? 'done' : (completed > 0 ? 'partial' : 'started');
     };
 
-    // ✅ NEW: Calculate daily progress
+    // Calculate daily progress
     const getDailyProgress = (day) => {
         const dayTasks = tasks.filter(task => task.day === day);
         if (dayTasks.length === 0) return { completed: 0, total: 0, percent: 0 };
@@ -275,7 +269,7 @@ const DailyTracker = () => {
                 )}
             </AnimatePresence>
 
-            {/* Daily Summary Modal - Shows what you did on a specific date */}
+            {/* Daily Summary Modal */}
             <AnimatePresence>
                 {isSummaryModalOpen && selectedDateForSummary && (
                     <DailySummaryModal
@@ -297,7 +291,7 @@ const DailyTracker = () => {
                 )}
             </AnimatePresence>
 
-            {/* Quick Revision Modal - See all your notes */}
+            {/* Quick Revision Modal */}
             <AnimatePresence>
                 {isRevisionModalOpen && (
                     <QuickRevision
