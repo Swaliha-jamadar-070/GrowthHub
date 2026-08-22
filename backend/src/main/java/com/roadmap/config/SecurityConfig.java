@@ -68,9 +68,10 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        // 🚀 FIXED: Allow Vercel frontend and all other necessary origins
+        // ✅ FIXED: Use the new Vercel URL
         configuration.setAllowedOrigins(Arrays.asList(
-                "https://growth-hub-3ioh-p7g18vht5-swaliha-jamadar-070s-projects.vercel.app",
+                "https://growth-hub-3ioh.vercel.app",
+                "https://growth-hub-3ioh-*.vercel.app",
                 "https://growthhub-10.onrender.com",
                 "http://localhost:3000",
                 "http://localhost:3001",
